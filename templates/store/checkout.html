@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <!-- SECTION PRINCIPALE -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="h2 text-uppercase mb-0">Passer à la caisse</h1>
+                </div>
+                <div class="col-lg-6 text-lg-right">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-lg-end mb-0 px-0">
+                            <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
+                            <li class="breadcrumb-item"><a href="cart.html">Panier</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Passer à la caisse</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <!-- ADRESSE DE FACTURATION -->
+        <h2 class="h5 text-uppercase mb-4">Détails de facturation</h2>
+        <div class="row">
+            <div class="col-lg-8">
+                <form action="{% url 'checkout' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-6 form-group">
+                            <label class="text-small text-uppercase" for="firstName">Prénom</label>
+                            <input class="form-control form-control-lg" id="firstName" name="first_name" type="text" placeholder="Entrez votre prénom" required>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label class="text-small text-uppercase" for="lastName">Nom</label>
+                            <input class="form-control form-control-lg" id="lastName" name="last_name" type="text" placeholder="Entrez votre nom" required>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label class="text-small text-uppercase" for="email">Adresse e-mail</label>
+                            <input class="form-control form-control-lg" id="email" name="email" type="email" placeholder="ex: Jason@example.com" required>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label class="text-small text-uppercase" for="phone">Numéro de téléphone</label>
+                            <input class="form-control form-control-lg" id="phone" name="phone" type="tel" placeholder="ex: +237 6XX XXX XXX" required>
+                        </div>
+                    </div>
+
+                    <!-- SECTION PAIEMENT -->
+                    <h2 class="h5 text-uppercase mb-4">Méthode de paiement</h2>
+                    <div class="form-group">
+                        <label for="paymentMethod">Choisissez votre méthode de paiement</label>
+                        <select class="form-control" id="paymentMethod" name="payment_method" required>
+                            <option value="">Sélectionner...</option>
+                            <option value="momo">Mobile Money (MoMo)</option>
+                            <option value="om">Orange Money (OM)</option>
+                        </select>
+                    </div>
+
+                    <!-- Champ pour numéro de transaction -->
+                    <div class="form-group">
+                        <label for="transactionId">ID de transaction MoMo/OM</label>
+                        <input type="text" class="form-control" id="transactionId" name="transaction_id" placeholder="Entrez l'ID de la transaction" required>
+                    </div>
+
+                    <!-- Bouton de validation -->
+                    <div class="col-lg-12 form-group">
+                        <button class="btn btn-dark" type="submit">Passer la commande</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- RÉSUMÉ DE LA COMMANDE -->
+            <div class="col-lg-4">
+                <div class="card border-0 rounded-0 p-lg-4 bg-light">
+                    <div class="card-body">
+                        <h5 class="text-uppercase mb-4">Votre commande</h5>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex align-items-center justify-content-between"><strong class="small font-weight-bold">Montre connectée rouge</strong><span class="text-muted small">250€</span></li>
+                            <li class="border-bottom my-2"></li>
+                            <li class="d-flex align-items-center justify-content-between"><strong class="small font-weight-bold">Chaussures de course Nike grises</strong><span class="text-muted small">351€</span></li>
+                            <li class="border-bottom my-2"></li>
+                            <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Total</strong><span>601€</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}
