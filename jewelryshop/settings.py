@@ -17,7 +17,11 @@ SECRET_KEY = 'django-insecure-3%y3laftm62q0zaj+s7#p-xqq9(&#q+)s8)p-&#&bz*0$!xu$0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*",""]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://jd-cosmetics.onrender.com",
+]
 
 
 # Application definition
@@ -33,7 +37,12 @@ INSTALLED_APPS = [
     'store',
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
