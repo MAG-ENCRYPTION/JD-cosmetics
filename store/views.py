@@ -1,5 +1,8 @@
 import django
+from django.contrib.auth import logout
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+
 from store.models import Address, Cart, Category, Order, Product
 from django.shortcuts import redirect, render, get_object_or_404
 from .forms import RegistrationForm, AddressForm
@@ -71,6 +74,15 @@ def profile(request):
     orders = Order.objects.filter(user=request.user)
     return render(request, 'account/profile.html', {'addresses':addresses, 'orders':orders})
 
+
+def custom_logout(request):
+    # Déconnecte l'utilisateur
+    logout(request)
+
+    # Afficher un message de déconnexion réussi (facultatif)
+    # Vous pouvez personnaliser ce message dans votre template ou via un flash message
+    # redirige vers la page d'accueil après la déconnexion
+    return HttpResponseRedirect('/accounts/login')  # Redirection vers la page d'accueil
 
 @method_decorator(login_required, name='dispatch')
 class AddressView(View):
@@ -209,10 +221,18 @@ def checkout2(request):
     user = request.user
 
     # Récupérer les articles dans le panier de l'utilisateur
-    cart_items = Cart.objects.filter(user=user)
+    cart_items = Cart.objects.all().filter(user=user)
+
 
     # Calcul du total de la commande
-    total_price = sum(item.total_price for item in cart_items)
+    total_price,total_products = sum(item.total_price for item in cart_items),sum(item.quantity for item in cart_items)
+
+    context = {
+        "items": cart_items,
+        "total_price": total_price,
+        "commandes": Order.objects.filter(user=user),
+        "total_products":total_products
+    }
 
     if request.method == "POST":
         # Récupérer les informations de facturation depuis le formulaire
@@ -246,11 +266,16 @@ def checkout2(request):
         # Affichage d'un message de succès et redirection après commande
         messages.success(request, "Votre commande a été passée avec succès !")
 
+        context = {
+            "items": cart_items,
+            "commandes": Order.objects.filter(user=user)
+        }
+
         # Rediriger vers une page de confirmation ou d'historique des commandes
-        return redirect('order_confirmation')
+        return render(request, 'store/checkout.html', context=context)
 
     # Rendu du template checkout avec les articles du panier et le total
-    return render(request, 'store/checkout.html')
+    return render(request, 'store/checkout.html', context=context)
 
 
 def shop(request):

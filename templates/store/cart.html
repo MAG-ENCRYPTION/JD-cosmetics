@@ -14,7 +14,7 @@
           <div class="col-lg-6 text-lg-right">
             <nav aria-label="breadcrumb">
               <ol class="breadcrumb justify-content-lg-end mb-0 px-0">
-                <li class="breadcrumb-item"><a href="index.html">Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'store:home' %}">Accueil</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Panier</li>
               </ol>
             </nav>
@@ -136,10 +136,10 @@
                 {% endif %}
                 <!-- Bouton PayPal -->
                 <div class="text-end" id="paypal-button-container"></div>
-                <!-- Paiement à la livraison -->
+                <!-- Paiement à la livraison
                 <button type="submit" class="btn btn-dark btn-lg btn-outline-dark">
                   <i class="fas fa-dollar-sign mr-2"></i>Paiement à la livraison
-                </button>
+                </button> -->
               </form>
             </div>
           </div>
